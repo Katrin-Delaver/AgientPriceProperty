@@ -20,9 +20,13 @@ namespace AgientPriceProperty
     /// </summary>
     public partial class MainWindow : Window
     {
+        PriceActiveEntities _context;
+        
         public MainWindow()
         {
             InitializeComponent();
+            _context = new PriceActiveEntities();
+            frame.Navigate(new Autorise(_context));
         }
     }
 }

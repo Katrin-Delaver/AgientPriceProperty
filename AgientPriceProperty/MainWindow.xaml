@@ -7,30 +7,8 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-        </Grid.RowDefinitions>
-        <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center">
-            <StackPanel Orientation="Horizontal">
-                <StackPanel Orientation="Vertical">
-                    <Label Content="Введите логин" Style="{DynamicResource mar}" Width="94"/>
-                    <Label Content="Введите пароль"/>
-                </StackPanel>
-                <StackPanel Orientation="Vertical">
-                    <TextBox Name="inputTabel" Style="{DynamicResource mar}"/>
-                    <TextBox Name="inputPassword" Style="{DynamicResource mar}"/>
-                </StackPanel>
-            </StackPanel>
-                <StackPanel VerticalAlignment="Center" HorizontalAlignment="Right">
-                    <Button Content="Войти" VerticalAlignment="Center"/>
-                </StackPanel>
-        </StackPanel>
+        <Frame Name="frame" NavigationUIVisibility="Hidden">
+            
+        </Frame>
     </Grid>
 </Window>

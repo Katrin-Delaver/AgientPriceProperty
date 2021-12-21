@@ -1,0 +1,484 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Хранилище PriceActiveModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Client">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="FIO" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="passport" Type="nvarchar" MaxLength="15" Nullable="false" />
+          <Property Name="phone" Type="nvarchar" MaxLength="14" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Employeer">
+          <Key>
+            <PropertyRef Name="tabelNumber" />
+          </Key>
+          <Property Name="tabelNumber" Type="int" Nullable="false" />
+          <Property Name="FIO" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="position" Type="int" Nullable="false" />
+          <Property Name="password" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Position">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="title" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Product">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="title" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="idPropery" Type="int" Nullable="false" />
+          <Property Name="tableNumberEmployeer" Type="int" Nullable="false" />
+          <Property Name="idClient" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="specifications">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="title" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="idViewProperty" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="TimeWork">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="dateWork" Type="date" Nullable="false" />
+          <Property Name="timeStart" Type="time" Precision="7" Nullable="false" />
+          <Property Name="timeFinish" Type="time" Precision="7" Nullable="false" />
+          <Property Name="tabelNumberPerson" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="viewProperty">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="title" Type="nvarchar" MaxLength="11" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Employeer_Position">
+          <End Role="Position" Type="Self.Position" Multiplicity="1" />
+          <End Role="Employeer" Type="Self.Employeer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Position">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Employeer">
+              <PropertyRef Name="position" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Product_Client">
+          <End Role="Client" Type="Self.Client" Multiplicity="1" />
+          <End Role="Product" Type="Self.Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Client">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Product">
+              <PropertyRef Name="idClient" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Product_Employeer">
+          <End Role="Employeer" Type="Self.Employeer" Multiplicity="1" />
+          <End Role="Product" Type="Self.Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employeer">
+              <PropertyRef Name="tabelNumber" />
+            </Principal>
+            <Dependent Role="Product">
+              <PropertyRef Name="tableNumberEmployeer" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Product_viewProperty">
+          <End Role="viewProperty" Type="Self.viewProperty" Multiplicity="1" />
+          <End Role="Product" Type="Self.Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="viewProperty">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Product">
+              <PropertyRef Name="idPropery" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_specifications_viewProperty">
+          <End Role="viewProperty" Type="Self.viewProperty" Multiplicity="1" />
+          <End Role="specifications" Type="Self.specifications" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="viewProperty">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="specifications">
+              <PropertyRef Name="idViewProperty" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TimeWork_Employeer">
+          <End Role="Employeer" Type="Self.Employeer" Multiplicity="1" />
+          <End Role="TimeWork" Type="Self.TimeWork" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employeer">
+              <PropertyRef Name="tabelNumber" />
+            </Principal>
+            <Dependent Role="TimeWork">
+              <PropertyRef Name="tabelNumberPerson" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Хранилище PriceActiveModelContainer">
+          <EntitySet Name="Client" EntityType="Self.Client" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Employeer" EntityType="Self.Employeer" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Position" EntityType="Self.Position" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Product" EntityType="Self.Product" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="specifications" EntityType="Self.specifications" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TimeWork" EntityType="Self.TimeWork" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="viewProperty" EntityType="Self.viewProperty" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Employeer_Position" Association="Self.FK_Employeer_Position">
+            <End Role="Position" EntitySet="Position" />
+            <End Role="Employeer" EntitySet="Employeer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Product_Client" Association="Self.FK_Product_Client">
+            <End Role="Client" EntitySet="Client" />
+            <End Role="Product" EntitySet="Product" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Product_Employeer" Association="Self.FK_Product_Employeer">
+            <End Role="Employeer" EntitySet="Employeer" />
+            <End Role="Product" EntitySet="Product" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Product_viewProperty" Association="Self.FK_Product_viewProperty">
+            <End Role="viewProperty" EntitySet="viewProperty" />
+            <End Role="Product" EntitySet="Product" />
+          </AssociationSet>
+          <AssociationSet Name="FK_specifications_viewProperty" Association="Self.FK_specifications_viewProperty">
+            <End Role="viewProperty" EntitySet="viewProperty" />
+            <End Role="specifications" EntitySet="specifications" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TimeWork_Employeer" Association="Self.FK_TimeWork_Employeer">
+            <End Role="Employeer" EntitySet="Employeer" />
+            <End Role="TimeWork" EntitySet="TimeWork" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="PriceActiveModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Client">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="FIO" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="passport" Type="String" MaxLength="15" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="phone" Type="String" MaxLength="14" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Product" Relationship="Self.FK_Product_Client" FromRole="Client" ToRole="Product" />
+        </EntityType>
+        <EntityType Name="Employeer">
+          <Key>
+            <PropertyRef Name="tabelNumber" />
+          </Key>
+          <Property Name="tabelNumber" Type="Int32" Nullable="false" />
+          <Property Name="FIO" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="position" Type="Int32" Nullable="false" />
+          <Property Name="password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Position1" Relationship="Self.FK_Employeer_Position" FromRole="Employeer" ToRole="Position" />
+          <NavigationProperty Name="Product" Relationship="Self.FK_Product_Employeer" FromRole="Employeer" ToRole="Product" />
+          <NavigationProperty Name="TimeWork" Relationship="Self.FK_TimeWork_Employeer" FromRole="Employeer" ToRole="TimeWork" />
+        </EntityType>
+        <EntityType Name="Position">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="title" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Employeer" Relationship="Self.FK_Employeer_Position" FromRole="Position" ToRole="Employeer" />
+        </EntityType>
+        <EntityType Name="Product">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="title" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="idPropery" Type="Int32" Nullable="false" />
+          <Property Name="tableNumberEmployeer" Type="Int32" Nullable="false" />
+          <Property Name="idClient" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Client" Relationship="Self.FK_Product_Client" FromRole="Product" ToRole="Client" />
+          <NavigationProperty Name="Employeer" Relationship="Self.FK_Product_Employeer" FromRole="Product" ToRole="Employeer" />
+          <NavigationProperty Name="viewProperty" Relationship="Self.FK_Product_viewProperty" FromRole="Product" ToRole="viewProperty" />
+        </EntityType>
+        <EntityType Name="specifications">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="title" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="idViewProperty" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="viewProperty" Relationship="Self.FK_specifications_viewProperty" FromRole="specifications" ToRole="viewProperty" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="TimeWork">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="dateWork" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="timeStart" Type="Time" Nullable="false" Precision="7" />
+          <Property Name="timeFinish" Type="Time" Nullable="false" Precision="7" />
+          <Property Name="tabelNumberPerson" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Employeer" Relationship="Self.FK_TimeWork_Employeer" FromRole="TimeWork" ToRole="Employeer" />
+        </EntityType>
+        <EntityType Name="viewProperty">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="title" Type="String" MaxLength="11" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Product" Relationship="Self.FK_Product_viewProperty" FromRole="viewProperty" ToRole="Product" />
+          <NavigationProperty Name="specifications" Relationship="Self.FK_specifications_viewProperty" FromRole="viewProperty" ToRole="specifications" />
+        </EntityType>
+        <Association Name="FK_Product_Client">
+          <End Role="Client" Type="Self.Client" Multiplicity="1" />
+          <End Role="Product" Type="Self.Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Client">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Product">
+              <PropertyRef Name="idClient" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Employeer_Position">
+          <End Role="Position" Type="Self.Position" Multiplicity="1" />
+          <End Role="Employeer" Type="Self.Employeer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Position">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Employeer">
+              <PropertyRef Name="position" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Product_Employeer">
+          <End Role="Employeer" Type="Self.Employeer" Multiplicity="1" />
+          <End Role="Product" Type="Self.Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employeer">
+              <PropertyRef Name="tabelNumber" />
+            </Principal>
+            <Dependent Role="Product">
+              <PropertyRef Name="tableNumberEmployeer" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TimeWork_Employeer">
+          <End Role="Employeer" Type="Self.Employeer" Multiplicity="1" />
+          <End Role="TimeWork" Type="Self.TimeWork" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employeer">
+              <PropertyRef Name="tabelNumber" />
+            </Principal>
+            <Dependent Role="TimeWork">
+              <PropertyRef Name="tabelNumberPerson" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Product_viewProperty">
+          <End Role="viewProperty" Type="Self.viewProperty" Multiplicity="1" />
+          <End Role="Product" Type="Self.Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="viewProperty">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Product">
+              <PropertyRef Name="idPropery" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_specifications_viewProperty">
+          <End Role="viewProperty" Type="Self.viewProperty" Multiplicity="1" />
+          <End Role="specifications" Type="Self.specifications" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="viewProperty">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="specifications">
+              <PropertyRef Name="idViewProperty" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="PriceActiveEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Client" EntityType="Self.Client" />
+          <EntitySet Name="Employeer" EntityType="Self.Employeer" />
+          <EntitySet Name="Position" EntityType="Self.Position" />
+          <EntitySet Name="Product" EntityType="Self.Product" />
+          <EntitySet Name="specifications" EntityType="Self.specifications" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+          <EntitySet Name="TimeWork" EntityType="Self.TimeWork" />
+          <EntitySet Name="viewProperty" EntityType="Self.viewProperty" />
+          <AssociationSet Name="FK_Product_Client" Association="Self.FK_Product_Client">
+            <End Role="Client" EntitySet="Client" />
+            <End Role="Product" EntitySet="Product" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Employeer_Position" Association="Self.FK_Employeer_Position">
+            <End Role="Position" EntitySet="Position" />
+            <End Role="Employeer" EntitySet="Employeer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Product_Employeer" Association="Self.FK_Product_Employeer">
+            <End Role="Employeer" EntitySet="Employeer" />
+            <End Role="Product" EntitySet="Product" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TimeWork_Employeer" Association="Self.FK_TimeWork_Employeer">
+            <End Role="Employeer" EntitySet="Employeer" />
+            <End Role="TimeWork" EntitySet="TimeWork" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Product_viewProperty" Association="Self.FK_Product_viewProperty">
+            <End Role="viewProperty" EntitySet="viewProperty" />
+            <End Role="Product" EntitySet="Product" />
+          </AssociationSet>
+          <AssociationSet Name="FK_specifications_viewProperty" Association="Self.FK_specifications_viewProperty">
+            <End Role="viewProperty" EntitySet="viewProperty" />
+            <End Role="specifications" EntitySet="specifications" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище PriceActiveModelContainer" CdmEntityContainer="PriceActiveEntities">
+          <EntitySetMapping Name="Client">
+            <EntityTypeMapping TypeName="PriceActiveModel.Client">
+              <MappingFragment StoreEntitySet="Client">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="FIO" ColumnName="FIO" />
+                <ScalarProperty Name="passport" ColumnName="passport" />
+                <ScalarProperty Name="phone" ColumnName="phone" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Employeer">
+            <EntityTypeMapping TypeName="PriceActiveModel.Employeer">
+              <MappingFragment StoreEntitySet="Employeer">
+                <ScalarProperty Name="tabelNumber" ColumnName="tabelNumber" />
+                <ScalarProperty Name="FIO" ColumnName="FIO" />
+                <ScalarProperty Name="position" ColumnName="position" />
+                <ScalarProperty Name="password" ColumnName="password" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Position">
+            <EntityTypeMapping TypeName="PriceActiveModel.Position">
+              <MappingFragment StoreEntitySet="Position">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="title" ColumnName="title" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Product">
+            <EntityTypeMapping TypeName="PriceActiveModel.Product">
+              <MappingFragment StoreEntitySet="Product">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="title" ColumnName="title" />
+                <ScalarProperty Name="idPropery" ColumnName="idPropery" />
+                <ScalarProperty Name="tableNumberEmployeer" ColumnName="tableNumberEmployeer" />
+                <ScalarProperty Name="idClient" ColumnName="idClient" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="specifications">
+            <EntityTypeMapping TypeName="PriceActiveModel.specifications">
+              <MappingFragment StoreEntitySet="specifications">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="title" ColumnName="title" />
+                <ScalarProperty Name="idViewProperty" ColumnName="idViewProperty" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="PriceActiveModel.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TimeWork">
+            <EntityTypeMapping TypeName="PriceActiveModel.TimeWork">
+              <MappingFragment StoreEntitySet="TimeWork">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="dateWork" ColumnName="dateWork" />
+                <ScalarProperty Name="timeStart" ColumnName="timeStart" />
+                <ScalarProperty Name="timeFinish" ColumnName="timeFinish" />
+                <ScalarProperty Name="tabelNumberPerson" ColumnName="tabelNumberPerson" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="viewProperty">
+            <EntityTypeMapping TypeName="PriceActiveModel.viewProperty">
+              <MappingFragment StoreEntitySet="viewProperty">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="title" ColumnName="title" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
