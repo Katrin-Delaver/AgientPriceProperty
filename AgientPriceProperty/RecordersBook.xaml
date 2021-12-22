@@ -31,27 +31,16 @@
             <Label Content="Журнал работ"/>
             <DataGrid Name="timeWorkEmployeer" AutoGenerateColumns="False">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Табельный номер сотрудника" Width="*" Binding="{Binding IdTableNumber}"/>
-                    <DataGridTextColumn Header="ФИО" Width="*" Binding="{Binding FIO}"/>
-                    <DataGridTextColumn Header="Время начало работы" Width="*" Binding="{Binding StartTime}"/>
-                    <DataGridTextColumn Header="Время окончания работы" Width="*" Binding="{Binding FinishTime}"/>
-                    <DataGridTextColumn Header="Количество отработанных часов" Width="*" Binding="{Binding SumTimeWork}"/>
-                    <DataGridTextColumn Header="Оплата" Width="*" Binding="{Binding Pay}"/>
+                    <DataGridTextColumn Header="Табельный номер сотрудника" Width="*" Binding="{Binding id}"/>
+                    <DataGridTextColumn Header="ФИО" Width="*" Binding="{Binding dateWork}"/>
+                    <DataGridTextColumn Header="Время начало работы" Width="*" Binding="{Binding timeStart}"/>
+                    <DataGridTextColumn Header="Время окончания работы" Width="*" Binding="{Binding timeFinish}"/>
+                    <DataGridTextColumn Header="Количество отработанных часов" Width="*" Binding="{Binding tabelNumberPerson}"/>
+                    <DataGridTextColumn Header="Переработка" Width="*" Binding="{Binding moreHour}"/>
+                    <DataGridTextColumn Header="Оплата" Width="*" Binding="{Binding money}"/>
                 </DataGrid.Columns>
             </DataGrid>
         </StackPanel>
-        <StackPanel Grid.Row="1">
-            <Label Content="Журнал переработки"/>
-            <DataGrid Name="PWorkEmployeer" AutoGenerateColumns="False">
-                <DataGrid.Columns>
-                    <DataGridTextColumn Header="Табельный номер сотрудника" Width="*" Binding="{Binding IdTableNumber}"/>
-                    <DataGridTextColumn Header="ФИО" Width="*" Binding="{Binding FIO}"/>
-                    <DataGridTextColumn Header="Время начало работы" Width="*" Binding="{Binding StartTime}"/>
-                    <DataGridTextColumn Header="Время окончания работы" Width="*" Binding="{Binding FinishTime}"/>
-                    <DataGridTextColumn Header="Количество отработанных часов" Width="*" Binding="{Binding PTimeWork}"/>
-                    <DataGridTextColumn Header="Оплата" Width="*" Binding="{Binding Pay}"/>
-                </DataGrid.Columns>
-            </DataGrid>
-        </StackPanel>
+        
     </Grid>
 </Page>

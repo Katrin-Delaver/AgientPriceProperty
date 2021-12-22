@@ -32,42 +32,28 @@ namespace AgientPriceProperty
 
         public void CheckTimeAndPay()
         {
-            var listTimePay = _context.TimeWork.ToList().Select(x => new
+            List<TimeWork> timeWorks = _context.TimeWork.ToList();
+            TimeSpan timeF = new TimeSpan(17, 0, 0);
+            foreach (var item in timeWorks)
             {
-                IdTableNumber = x.tabelNumberPerson,
-                FIO = x.Employeer.FIO,
-                StartTime = x.timeStart,
-                FinishTime = x.timeFinish,
-                SumTimeWork = x.timeFinish.Hours - x.timeStart.Hours,
-                Pay = x.timeFinish > TimeSpan.Parse("17:00:00") ? 0 : (x.timeFinish.Hours - x.timeStart.Hours) * priceHour
-            }).ToList();
-
-            timeWorkEmployeer.ItemsSource = listTimePay;
-
-            var listP = listTimePay.Select(x => new
-            {
-                IdTableNumber = x.IdTableNumber,
-                FIO = x.FIO,
-                StartTime = x.StartTime,
-                FinishTime = x.FinishTime,
-                PTimeWork = x.FinishTime > TimeSpan.Parse("17:00:00") ? x.FinishTime.Hours - TimeSpan.Parse("17:00:00").Hours : 0,
-                Pay = x.FinishTime > TimeSpan.Parse("17:00:00") ? (x.FinishTime.Hours - TimeSpan.Parse("17:00:00").Hours) * doublePriceHour : 0
-            });
-
-            PWorkEmployeer.ItemsSource = listP;
-
-
-            var genericList = listTimePay.Join(listP,
-                x => x.IdTableNumber,
-                y => y.IdTableNumber,
-                (x, y) => new
+                
+                if (item.timeFinish > timeF)
                 {
-                    TableNumber = x.IdTableNumber,
-                    Pay = listTimePay.Where(c => c.IdTableNumber == x.IdTableNumber).Sum(u => u.Pay) + listP.Where(c => c.IdTableNumber == y.IdTableNumber).Sum(u => u.Pay)
-                }).Distinct();
+                    item.moreHour = (item.timeFinish - timeF).Hours;
+                    item.money += item.moreHour * 400;
+                }
+                if (item.timeStart > timeF)
+                {
+                    item.moreHour -= (item.timeStart - timeF).Hours;
+                    item.money -= (item.timeStart - timeF).Hours * 400;
+                }
+                
+                item.money += (item.timeFinish - item.timeStart).Hours * 200;
+            }
 
-            //var listTime = listTimePay.Select(x => new { TabelNumber = x.IdTableNumber, Pay = listTimePay.Where(y => y.IdTableNumber == x.IdTableNumber).Sum(u => (int)u.Pay)}).Distinct();
-            dataPay.ItemsSource = genericList.ToList();
+            timeWorkEmployeer.ItemsSource = timeWorks;
+
+            //dataPay.ItemsSource = list;
         }
 
     }

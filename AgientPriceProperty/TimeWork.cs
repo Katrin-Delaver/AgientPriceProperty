@@ -19,7 +19,9 @@ namespace AgientPriceProperty
         public System.TimeSpan timeStart { get; set; }
         public System.TimeSpan timeFinish { get; set; }
         public int tabelNumberPerson { get; set; }
-    
+        public int money { get; set; }
+        public int moreHour { get; set; }
+
         public virtual Employeer Employeer { get; set; }
     }
 }
